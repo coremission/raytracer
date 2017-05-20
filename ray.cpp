@@ -1,8 +1,8 @@
 #include "ray.h"
 
-ray::ray(){}
+Ray::Ray(){}
 
-ray::ray(const glm::vec3& a, const glm::vec3& b)
+Ray::Ray(const glm::vec3& a, const glm::vec3& b)
 	:mOrigin(a), mDirection(b)
 {
 }
