@@ -6,6 +6,7 @@
 #include "hitablelist.h"
 #include "sphere.h"
 #include "camera.h"
+#include "material.h"
 
 using namespace glm;
 
@@ -13,21 +14,16 @@ float random() {
 	return float(rand()) / float(RAND_MAX);
 }
 
-vec3 randomInUnitSphere() {
-	vec3 p = normalize(vec3(random(), random(), random()));
-	/*do {
-		p = 2.0f * vec3(random(), random(), random()) - vec3(1.f, 1.f, 1.f);
-	} while (p.length() * p.length() >= 1.0f);
-	*/
-	return p;
-}
-
-vec3 color(const Ray& r, Hitable* world) {
+vec3 color(const Ray& r, Hitable* world, int depth) {
 	HitRecord rec;
 
-	if(world->Hit(r, 0.0, 9999999.f, rec)) {
-		vec3 target = rec.p + rec.normal + randomInUnitSphere();
-		return 0.5f * color(Ray(rec.p, target), world);
+	if(world->Hit(r, 0.0001f, 9999999.f, rec)) {
+		Ray scatteredRay;
+		vec3 attenuation;
+		if(depth < 5 && rec.material->scatter(r, rec, attenuation, scatteredRay)) {
+			return attenuation * color(scatteredRay, world, depth + 1);
+		}
+		return vec3(0.f, 0.f, 0.f);
 	}
 	// gradient for background
 	vec3 unit_direction = normalize(r.direction());
@@ -45,8 +41,11 @@ int main(int argc, char** argv) {
 	std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
 	Hitable* list[2];
-	list[0] = new Sphere(vec3(0.f, 0.f, -1.f), 0.5f);
-	list[1] = new Sphere(vec3(0.f, -100.5f, -1.f), 100);
+	Lambertian lmat(vec3(0.2f, 0.3f, 0.5f));
+	Metal mmat(vec3(0.2f, 0.3f, 0.7f));
+
+	list[0] = new Sphere(&lmat, vec3(0.f, 0.f, -1.f), 0.5f);
+	list[1] = new Sphere(&lmat, vec3(0.f, -100.5f, -1.f), 100);
 	Hitable* world = new HitableList(list, 2);
 	Camera cam;
 	for(int y = ny - 1; y > 0; --y) {
@@ -61,7 +60,7 @@ int main(int argc, char** argv) {
 				float v = float(x + random()) / float(nx);
 
 				Ray r = cam.getRay(u, v);
-				c += color(r, world);
+				c += color(r, world, 0);
 			}
 			
 			c /= float(ns);
