@@ -24,6 +24,7 @@ bool Sphere::Hit(const Ray& r, float tmin, float tmax, HitRecord& rec) const {
 		temp = (-b + sqrt(D)) / a;
 		if (temp < tmax && temp > tmin) {
 			rec.t = temp;
+			rec.material = getMaterial();
 			rec.p = r.pointAtParameter(temp);
 			rec.normal = normalize((rec.p - center) / radius);
 			return true;

@@ -28,7 +28,7 @@ bool Lambertian::scatter(const Ray& rayIn, const HitRecord& rec, glm::vec3& atte
 
 bool Metal::scatter(const Ray& rayIn, const HitRecord& rec, glm::vec3& attenuation, Ray& scatteredRay) const {
 	vec3 reflected = reflect(normalize(rayIn.direction()), rec.normal);
-	scatteredRay = Ray(rec.p, reflected);
+	scatteredRay = Ray(rec.p, reflected + fuzz * randomInUnitSphere());
 	attenuation = albedo;
 	return dot(scatteredRay.direction(), rec.normal) > 0;
 }

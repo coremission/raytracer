@@ -40,13 +40,14 @@ int main(int argc, char** argv) {
 
 	std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-	Hitable* list[2];
-	Lambertian lmat(vec3(0.2f, 0.3f, 0.5f));
-	Metal mmat(vec3(0.2f, 0.3f, 0.7f));
+	constexpr int count = 4;
+	Hitable* list[count];
+	list[0] = new Sphere(new Lambertian(vec3(0.2f, 0.3f, 0.5f)), vec3(0.f, 0.f, -1.f), 0.5f);
+	list[1] = new Sphere(new Lambertian(vec3(0.2f, 0.9f, 0.1f)), vec3(0.f, -100.5f, -1.f), 100);
+	list[2] = new Sphere(new Metal(vec3(0.8f, 0.3f, 0.1f), 1.f), vec3(1.f, 0.f, -1.f), 0.5f);
+	list[3] = new Sphere(new Metal(vec3(0.5f, 0.8f, 0.2f), 0.2f), vec3(-1.f, 0.f, -1.f), 0.5f);
 
-	list[0] = new Sphere(&lmat, vec3(0.f, 0.f, -1.f), 0.5f);
-	list[1] = new Sphere(&lmat, vec3(0.f, -100.5f, -1.f), 100);
-	Hitable* world = new HitableList(list, 2);
+	Hitable* world = new HitableList(list, count);
 	Camera cam;
 	for(int y = ny - 1; y > 0; --y) {
 		for(int x = 0; x < nx; ++x) {
