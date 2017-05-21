@@ -6,7 +6,7 @@ bool HitableList::Hit(const Ray& r, float tmin, float tmax, HitRecord& rec) cons
 
 	float closestSoFar = tmax;
 	for(int i = 0; i < listSize; ++i) {
-		if(list[i]->Hit(r, tmin, tmax, temp)) {
+		if(list[i]->Hit(r, tmin, closestSoFar, temp)) {
 			hitAnything = true;
 			closestSoFar = temp.t;
 			rec = temp;

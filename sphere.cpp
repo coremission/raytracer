@@ -12,19 +12,19 @@ bool Sphere::Hit(const Ray& r, float tmin, float tmax, HitRecord& rec) const {
 
 	float D = b * b - a * c;
 	if(D > 0) {
-		float temp = (-b - sqrt(b*b - a*c)) / a;
-		if(temp < tmax, temp > tmin) {
+		float temp = (-b - sqrt(D)) / a;
+		if(temp < tmax && temp > tmin) {
 			rec.t = temp;
 			rec.p = r.pointAtParameter(temp);
-			rec.normal = (rec.p - center) / radius;
+			rec.normal = normalize((rec.p - center) / radius);
 			return true;
 		}
 
-		temp = (-b + sqrt(b*b - a*c)) / a;
+		temp = (-b + sqrt(D)) / a;
 		if (temp < tmax && temp > tmin) {
 			rec.t = temp;
 			rec.p = r.pointAtParameter(temp);
-			rec.normal = (rec.p - center) / radius;
+			rec.normal = normalize((rec.p - center) / radius);
 			return true;
 		}
 	}
