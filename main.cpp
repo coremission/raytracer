@@ -20,7 +20,7 @@ vec3 color(const Ray& r, Hitable* world, int depth) {
 	if(world->Hit(r, 0.0001f, 9999999.f, rec)) {
 		Ray scatteredRay;
 		vec3 attenuation;
-		if(depth < 5 && rec.material->scatter(r, rec, attenuation, scatteredRay)) {
+		if(depth < 50 && rec.material->scatter(r, rec, attenuation, scatteredRay)) {
 			return attenuation * color(scatteredRay, world, depth + 1);
 		}
 		return vec3(0.f, 0.f, 0.f);
@@ -36,7 +36,7 @@ void debug(){}
 int main(int argc, char** argv) {
 	int nx = 200;
 	int ny = 200;
-	int ns = 16;
+	int ns = 160;
 
 	std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -57,9 +57,9 @@ int main(int argc, char** argv) {
 					debug();
 				}
 
-				float u = float(y + random()) / float(ny);
-				float v = float(x + random()) / float(nx);
-
+				float u = float(x + random()) / float(nx);
+				float v = float(y + random()) / float(ny);
+				
 				Ray r = cam.getRay(u, v);
 				c += color(r, world, 0);
 			}
