@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 	list[0] = new Sphere(new Lambertian(vec3(0.2f, 0.3f, 0.5f)), vec3(0.f, 0.f, -1.f), 0.5f);
 	list[1] = new Sphere(new Lambertian(vec3(0.2f, 0.9f, 0.1f)), vec3(0.f, -100.5f, -1.f), 100);
 	list[2] = new Sphere(new Metal(vec3(0.8f, 0.3f, 0.1f), 1.f), vec3(1.f, 0.f, -1.f), 0.5f);
-	list[3] = new Sphere(new Metal(vec3(0.5f, 0.8f, 0.2f), 0.2f), vec3(-1.f, 0.f, -1.f), 0.5f);
+	list[3] = new Sphere(new Dielectric(1.5f), vec3(-1.f, 0.f, -1.f), 0.5f);
 
 	Hitable* world = new HitableList(list, count);
 	Camera cam;

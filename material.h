@@ -24,3 +24,10 @@ public:
 	Metal(const glm::vec3 _albedo, float _fuzz): albedo(_albedo), fuzz(_fuzz) {}
 	virtual bool scatter(const Ray& rayIn, const HitRecord& rec, glm::vec3& attenuation, Ray& scatteredRay) const override;
 };
+
+class Dielectric: public Material {
+	float refIdx;
+public:
+	Dielectric(float rf): refIdx(rf) {}
+	virtual bool scatter(const Ray& rayIn, const HitRecord& rec, glm::vec3& attenuation, Ray& scatteredRay) const override;
+};
