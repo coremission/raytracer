@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
 	list[3] = new Sphere(new Dielectric(1.5f), vec3(-1.f, 0.f, -1.f), 0.5f);
 
 	Hitable* world = new HitableList(list, count);
-	Camera cam;
+	Camera cam(vec3(-2, 2, 1), vec3(0, 0, -1), vec3(0, 1, 0) ,1.6f, float(nx) / float(ny), 0.001f, 0.5f);
 	for(int y = ny - 1; y > 0; --y) {
 		for(int x = 0; x < nx; ++x) {
 			vec3 c(0.f, 0.f, 0.f);
