@@ -34,9 +34,9 @@ vec3 color(const Ray& r, Hitable* world, int depth) {
 void debug(){}
 
 int main(int argc, char** argv) {
-	int nx = 200;
-	int ny = 200;
-	int ns = 160;
+	int nx = 400;
+	int ny = 400;
+	int ns = 80;
 
 	std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -48,7 +48,16 @@ int main(int argc, char** argv) {
 	list[3] = new Sphere(new Dielectric(1.5f), vec3(-1.f, 0.f, -1.f), 0.5f);
 
 	Hitable* world = new HitableList(list, count);
-	Camera cam(vec3(-2, 2, 1), vec3(0, 0, -1), vec3(0, 1, 0) ,1.6f, float(nx) / float(ny), 0.001f, 0.5f);
+
+	const float aspect = float(nx) / float(ny);
+	const float fov = 1.1f;
+	const vec3 upDirection = vec3(0, 1, 0);
+	const vec3 cameraPosition = vec3(-2, 2, 1);
+	const vec3 lookAtPosition = vec3(0, 0, -1);
+	const float focalDistance = glm::length(lookAtPosition - cameraPosition);
+	const float apperture = 1.5f;
+	Camera cam(cameraPosition, lookAtPosition, upDirection, fov, aspect, apperture, focalDistance);
+
 	for(int y = ny - 1; y > 0; --y) {
 		for(int x = 0; x < nx; ++x) {
 			vec3 c(0.f, 0.f, 0.f);

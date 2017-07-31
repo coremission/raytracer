@@ -25,6 +25,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 lookAt,
 }
 
 vec3 randomInUnitDisk() {
+	// actually doesn't look like this in disk, sphere
 	vec3 p = normalize(vec3(random(), random(), random()));
 	/*do {
 	p = 2.0f * vec3(random(), random(), random()) - vec3(1.f, 1.f, 1.f);
@@ -37,5 +38,5 @@ Ray Camera::getRay(float u, float v) {
 	vec3 rd = aperture / 2.f * randomInUnitDisk();
 	//vec3 offset = u * rd.x + v * rd.y;
 
-	return Ray(origin, lowerLeftCorner + u * horizontal + v * vertical - origin);
+	return Ray(origin + rd, lowerLeftCorner + u * horizontal + v * vertical - origin - rd);
 }
